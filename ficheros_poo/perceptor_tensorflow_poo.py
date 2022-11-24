@@ -12,37 +12,6 @@ class prediccion_tensorflow():
         self.peso=peso
         self.sesgo=sesgo
 
-    #-------------------------------------
-    #    PARÁMETROS DE LA RED
-    #-------------------------------------
-
-    def creacion_neuronas(self):
-
-        #Variable TensorFLow correspondiente a los valores de neuronas de entrada
-        tf_neuronas_entradas_X = tf.compat.v1.placeholder(tf.float32, [None, 2])
-
-        #Variable TensorFlow correspondiente a la neurona de salida (predicción real)
-        tf_valores_reales_Y = tf.compat.v1.placeholder(tf.float32, [None, 1])
-
-        #-- Peso --
-        #Creación de una variable TensorFlow de tipo tabla
-        #que contiene 2 entradas y cada una tiene un peso [2,1]
-        #Estos valores se inicializan al azar
-        peso = tf.Variable(tf.random_normal([2, 1]), tf.float32)
-
-        #-- Sesgo inicializado a 0 --
-        sesgo = tf.Variable(tf.zeros([1, 1]), tf.float32)
-
-        #La suma ponderada es en la práctica una multiplicación de matrices
-        #entre los valores en la entrada X y los distintos pesos
-        #la función matmul se encarga de hacer esta multiplicación
-        sumaponderada = tf.matmul(tf_neuronas_entradas_X,peso)
-
-        #Adición del sesgo a la suma ponderada
-        sumaponderada = tf.add(sumaponderada,sesgo)
-
-
-
 
 
     def aprendizaje(self):
@@ -102,7 +71,7 @@ class prediccion_tensorflow():
         print("--- VERIFICACIONES ----")
 
         for i in range(0,4):
-            print("Observación:"+str(self.valores_entradas_X[i])+ " - Esperado: "+str(self.valores_a_predecir_Y[i])+" - Predicción: "+str(sesion.run(prediccion, feed_dict={tf_neuronas_entradas_X: [self.valores_entradas_X[i]]})))
+            print("Observación:"+str(self.valores_entradas_X[i])+ " - Esperado: "+str(self.valores_a_predecir_Y[i])+" - Predicción: "+str(sesion.run(prediccion, feed_dict={self.tf_neuronas_entradas_X: [self.valores_entradas_X[i]]})))
 
 
 
@@ -112,23 +81,31 @@ class prediccion_tensorflow():
 
 def main():
 
+    valores_entradas_X = [[1., 0.], [1., 1.], [0., 1.], [0., 0.]]
+    valores_a_predecir_Y = [[0.], [1.], [0.], [0.]]
     #Variable TensorFLow correspondiente a los valores de neuronas de entrada
     tf_neuronas_entradas_X = tf.compat.v1.placeholder(tf.float32, [None, 2])
 
     #Variable TensorFlow correspondiente a la neurona de salida (predicción real)
-    tf_valores_reales_Y =tf.compat.v1.placeholder(tf.float32, [None, 1])
+    tf_valores_reales_Y = tf.compat.v1.placeholder(tf.float32, [None, 1])
 
-        #-- Peso --
-        #Creación de una variable TensorFlow de tipo tabla
-        #que contiene 2 entradas y cada una tiene un peso [2,1]
-        #Estos valores se inicializan al azar
+    #-- Peso --
+    #Creación de una variable TensorFlow de tipo tabla
+    #que contiene 2 entradas y cada una tiene un peso [2,1]
+    #Estos valores se inicializan al azar
     peso = tf.Variable(tf.random_normal([2, 1]), tf.float32)
 
-        #-- Sesgo inicializado a 0 --
-    sesgo = tf.compat.v1.Variable(tf.zeros([1, 1]), tf.float32)
+    #-- Sesgo inicializado a 0 --
+    sesgo = tf.Variable(tf.zeros([1, 1]), tf.float32)
 
-    valores_entradas_X = [[1., 0.], [1., 1.], [0., 1.], [0., 0.]]
-    valores_a_predecir_Y = [[0.], [1.], [0.], [0.]]
+    #La suma ponderada es en la práctica una multiplicación de matrices
+    #entre los valores en la entrada X y los distintos pesos
+    #la función matmul se encarga de hacer esta multiplicación
+    sumaponderada = tf.compat.v1.matmul(tf_neuronas_entradas_X,peso)
+
+    #Adición del sesgo a la suma ponderada
+    sumaponderada = tf.add(sumaponderada,sesgo)
+
 
     neuronas=prediccion_tensorflow(valores_entradas_X,valores_a_predecir_Y , tf_valores_reales_Y, tf_neuronas_entradas_X, peso, sesgo)
-    neuronas.aprendizaje()
+    return neuronas.aprendizaje()

@@ -1,5 +1,5 @@
 import numpy as np
-import funciones_utiles
+import ficheros_poo.funciones_utiles as funciones_utiles
 
 class programacion_percepcion_clase ():
 
@@ -10,51 +10,6 @@ class programacion_percepcion_clase ():
         self.sesgo=sesgo
         self.txAprendizaje=txAprendizaje
         self.peso=peso
-    #-------------------------------------
-    #    OBSERVACIONES Y PREDICCIONES
-    #-------------------------------------
-    def observaciones_predicciones(self):
-        self.observaciones_entradas = np.array([
-                                    [1, 0],
-                                    [1, 1],
-                                    [0, 1],
-                                    [0, 0]
-                                    ])
-
-
-        self.predicciones = np.array([[0],[1], [0],[0]])
-
-
-        #--------------------------------------
-        #      PARAMETRIZACIÓN DEL PERCEPTRÓN
-        #--------------------------------------
-
-        #Generación de los pesos en el intervalo [-1;1]
-        np.random.seed(1)
-        limiteMin = -1
-        limiteMax = 1
-
-        w11 = (limiteMax-limiteMin) * np.random.random() + limiteMin
-        w21 = (limiteMax-limiteMin) * np.random.random() + limiteMin
-        w31 = (limiteMax-limiteMin) * np.random.random() + limiteMin
-
-        #El sesgo
-        self.sesgo = 1
-        wb = 0
-
-        #Almacenamiento de los pesos iniciales, solo para visualización al final del aprendizaje
-        self.peso = [w11,w21,w31,wb]
-
-        #Tasa de aprendizaje
-        self.txAprendizaje = 0.1
-
-        #Cantidad de épocas
-        self.epochs = 3
-
-
-
-
-
 
     #--------------------------------------
     #    APRENDIZAJE
@@ -68,14 +23,14 @@ class programacion_percepcion_clase ():
 
         for epoch in range(0,self.epochs):
             print("EPOCH ("+str(epoch)+"/"+str(self.epochs)+")")
-            predicciones_realizadas_durante_epoch = [];
-            predicciones_esperadas = [];
+            predicciones_realizadas_durante_epoch = []
+            predicciones_esperadas = []
             numObservacion = 0
             for observacion in self.observaciones_entradas:
 
                 #Carga de la capa de entrada
-                x1 = observacion[0];
-                x2 = observacion[1];
+                x1 = observacion[0]
+                x2 = observacion[1]
 
                 #Valor de predicción esperado
                 valor_esperado = self.predicciones[numObservacion][0]
@@ -165,14 +120,19 @@ class programacion_percepcion_clase ():
 def main():
 
     observaciones_entradas = np.array([
-                                    [1, 0],
-                                    [1, 1],
-                                    [0, 1],
-                                    [0, 0]
-                                    ])
+                                [1, 0],
+                                [1, 1],
+                                [0, 1],
+                                [0, 0]
+                                ])
 
 
     predicciones = np.array([[0],[1], [0],[0]])
+
+
+    #--------------------------------------
+    #      PARAMETRIZACIÓN DEL PERCEPTRÓN
+    #--------------------------------------
 
     #Generación de los pesos en el intervalo [-1;1]
     np.random.seed(1)
@@ -182,10 +142,20 @@ def main():
     w11 = (limiteMax-limiteMin) * np.random.random() + limiteMin
     w21 = (limiteMax-limiteMin) * np.random.random() + limiteMin
     w31 = (limiteMax-limiteMin) * np.random.random() + limiteMin
+
+    #El sesgo
+    sesgo = 1
     wb = 0
 
+    #Almacenamiento de los pesos iniciales, solo para visualización al final del aprendizaje
     peso = [w11,w21,w31,wb]
 
+    #Tasa de aprendizaje
+    txAprendizaje = 0.1
 
-    info_percepcion=programacion_percepcion_clase(observaciones_entradas, predicciones, 3, 1, 0.1, peso)
-    info_percepcion.aprendizaje()
+    #Cantidad de épocas
+    epochs = 3
+
+
+    info_percepcion=programacion_percepcion_clase(observaciones_entradas, predicciones, epochs, sesgo, txAprendizaje, peso)
+    return info_percepcion.aprendizaje()
