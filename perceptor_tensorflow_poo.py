@@ -93,7 +93,7 @@ def main():
     #Creación de una variable TensorFlow de tipo tabla
     #que contiene 2 entradas y cada una tiene un peso [2,1]
     #Estos valores se inicializan al azar
-    peso = tf.Variable(tf.random_normal([2, 1]), tf.float32)
+    peso = tf.Variable(tf.random.normal([2, 1]), tf.float32)
 
     #-- Sesgo inicializado a 0 --
     sesgo = tf.Variable(tf.zeros([1, 1]), tf.float32)
@@ -107,5 +107,10 @@ def main():
     sumaponderada = tf.add(sumaponderada,sesgo)
 
 
-    neuronas=prediccion_tensorflow(valores_entradas_X,valores_a_predecir_Y , tf_valores_reales_Y, tf_neuronas_entradas_X, peso, sesgo)
+    neuronas=prediccion_tensorflow(valores_entradas_X,valores_a_predecir_Y ,
+                                        tf_valores_reales_Y, tf_neuronas_entradas_X, peso, sesgo)
     return neuronas.aprendizaje()
+
+
+# if __name__ == '__main__':
+#     main()

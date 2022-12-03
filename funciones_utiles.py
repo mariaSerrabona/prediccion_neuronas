@@ -6,7 +6,7 @@ import numpy as np
 
 class funciones_utiles():
 
-    def suma_ponderada( X1,W11,X2,W21,B,WB):
+    def suma_ponderada(X1,W11,X2,W21,B,WB):
         return (B*WB+( X1*W11 + X2*W21))
 
     def funcion_activacion_sigmoide(valor_suma_ponderada):

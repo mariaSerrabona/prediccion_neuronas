@@ -1,5 +1,5 @@
 import numpy as np
-import ficheros_poo.funciones_utiles as funciones_utiles
+import funciones_utiles
 
 class programacion_percepcion_clase ():
 
@@ -159,3 +159,9 @@ def main():
 
     info_percepcion=programacion_percepcion_clase(observaciones_entradas, predicciones, epochs, sesgo, txAprendizaje, peso)
     return info_percepcion.aprendizaje()
+
+
+
+
+# if __name__ == '__main__':
+#     main()
